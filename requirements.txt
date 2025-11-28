@@ -12,3 +12,4 @@ langchain-core
 langchain
 tensorflow
 python-dotenv
+opencv-python-headless
