@@ -14,3 +14,4 @@ tensorflow
 python-dotenv
 opencv-python-headless
 IPython
+joblib
