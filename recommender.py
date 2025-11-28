@@ -85,7 +85,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 #     api_key=os.getenv("llm_api_key"), temperature=0.0
 # )
 llm = ChatOpenAI( # Renamed instance for clarity
-      api_key=os.getenv("llm_api_key"),
+      api_key=st.secrets("llm_api_key"),
       model="gpt-4o-mini",  # You can use "gpt-4o", "gpt-5", etc.
       temperature=0.0)
 
