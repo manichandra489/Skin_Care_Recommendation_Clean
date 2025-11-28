@@ -6,6 +6,7 @@ from pinecone import Pinecone, ServerlessSpec
 from IPython.display import Image, display
 from langgraph.graph import StateGraph, START, END
 from pprint import pprint
+import streamlit as st
 
 # Load CLIP model
 device = "cuda" if torch.cuda.is_available() else "cpu"
