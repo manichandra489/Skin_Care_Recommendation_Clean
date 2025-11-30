@@ -12,7 +12,7 @@ from recommender import run, ImageState
 
 # ---------- Page config & basic styling ----------
 st.set_page_config(
-    page_title="AI SkinCare Assistant",
+    page_title="Skin Wise",
     layout="wide",
 )
 
@@ -31,7 +31,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("AI SkinCare Assistant")
+st.title("Skin Wise")
 st.write("Analyze your face image for quality and get personalized L'Oréal skincare recommendations.")
 
 
@@ -114,23 +114,47 @@ with right_col:
 
             st.success("Recommendations generated")
 
-            # Flexible display of `result` depending on its structure
-            if isinstance(result, dict):
-                # If your graph returns a dict-like state
+        if isinstance(result, dict):
+            # If abnormal skin or no products/links, show doctor message
+            if result["products"].empty:
+                st.error(
+                    "Your skin analysis shows signs that may require medical attention. "
+                    "Please consult a dermatologist or healthcare professional for a proper diagnosis and treatment."
+                )
+            else:
+                # Skin info
                 if "skin_disease" in result and result["skin_disease"]:
                     st.markdown(f"**Skin condition:** {result['skin_disease']}")
-                if "bauman_type" in result:
+                if "bauman_type" in result and result["bauman_type"]:
                     st.markdown(f"**Bauman skin type:** {result['bauman_type']}")
-                if "des" in result:
-                    st.markdown("### Recommended routine")
-                    st.write(result["des"])
-                if "medimage" in result and result["medimage"]:
-                    st.markdown("### Suggested products")
-                    for url in result["medimage"]:
+                if "age" in result and "gender" in result:
+                    st.markdown(f"**Profile:** {result['gender']} · {result['age']}")
+
+                # Source URLs used for scraping
+                if "weblinks" in result and result["weblinks"]:
+                    st.markdown("### Source pages")
+                    for url in result["weblinks"]:
                         st.markdown(f"- {url}")
-                if "toxic" in result and result["toxic"]:
-                    st.markdown("### Ingredient compatibility")
-                    st.write(result["toxic"])
-            else:
-                # Fallback: just print whatever the graph returned
-                st.write(result)
+
+                # Top products with images
+                if "products" in result and not result["products"].empty:
+                    st.markdown("### Top recommended products")
+                    df = result["products"]
+
+                    for _, row in df.iterrows():
+                        st.markdown(f"**{row['Title']}**")
+                        st.write(row["Subtitle"])
+                        st.write(f"Price: {row['Price']}  ·  Rating: {row['Rating']}")
+
+                        img = row.get("Img_url")
+                        if isinstance(img, list):
+                            img = img[0]
+                        if img and img != "N/A":
+                            st.image(img, width=200)
+
+                        link = row.get("Link")
+                        if link and link != "N/A":
+                            st.markdown(f"[View product]({link})")
+        else:
+            st.write(result)
+
