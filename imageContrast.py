@@ -66,7 +66,7 @@ def analyze_face_contrast_bgr(frame_bgr):
 
     if focus_score < 15 or dynamic_range < 20:
         status = "Low"
-    elif contrast < 50:
+    elif contrast < 40:
         status = "Medium"
     else:
         status = "High"
