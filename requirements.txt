@@ -15,3 +15,5 @@ python-dotenv
 opencv-python-headless
 IPython
 joblib
+mtcnn
+tf_keras
