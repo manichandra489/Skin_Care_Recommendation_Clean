@@ -115,7 +115,7 @@ with right_col:
 
                 if isinstance(result, dict):
                     # If abnormal skin or no products/links, show doctor message
-                    if result["medimage"].empty:
+                    if result["medimage"] == []:
                         st.error(
                             "Your skin analysis shows signs that may require medical attention. "
                             "Please consult a dermatologist or healthcare professional for a proper diagnosis and treatment."
